@@ -8,6 +8,8 @@ import (
 	"net/http"
 )
 
+type controler struct {}
+
 var postService services.PostService = services.NewPostService()
 
 type PostController interface {
@@ -15,7 +17,11 @@ type PostController interface {
 	AddPost(response http.ResponseWriter, request *http.Request)
 }
 
-func GetPosts(response http.ResponseWriter, request *http.Request) {
+func NewPostController() PostController {
+	return &controler{}
+}
+
+func (*controler) GetPosts(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("Content-Type", "application/json")
 	posts, err := postService.FindAll()
 	if err != nil {
@@ -26,7 +32,7 @@ func GetPosts(response http.ResponseWriter, request *http.Request) {
 	json.NewEncoder(response).Encode(posts)
 }
 
-func AddPost(response http.ResponseWriter, request *http.Request) {
+func (*controler) AddPost(response http.ResponseWriter, request *http.Request) {
 	var post entities.Post
 	err := json.NewDecoder(request.Body).Decode(&post)
 	if err != nil {
