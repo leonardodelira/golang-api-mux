@@ -14,11 +14,13 @@ type PostService interface {
 
 type service struct {}
 
-func NewPostService() PostService {
+var repo repository.PostRepository
+
+func NewPostService(rep repository.PostRepository) PostService {
+	repo = rep
 	return &service{}
 }
 
-var repo repository.PostRepository = repository.NewPostgresRepository()
 
 func (*service) Validate(post *entities.Post) error {
 	if post == nil {

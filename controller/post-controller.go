@@ -4,13 +4,15 @@ import (
 	"encoding/json"
 	"goapimux/entities"
 	"goapimux/errors"
+	"goapimux/repository"
 	"goapimux/services"
 	"net/http"
 )
 
 type controler struct {}
 
-var postService services.PostService = services.NewPostService()
+var repo repository.PostRepository = repository.NewPostgresRepository()
+var postService services.PostService = services.NewPostService(repo)
 
 type PostController interface {
 	GetPosts(response http.ResponseWriter, request *http.Request)
