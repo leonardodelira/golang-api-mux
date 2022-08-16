@@ -4,10 +4,14 @@ import (
 	"goapimux/config"
 	"goapimux/controller"
 	"goapimux/http"
+	"goapimux/repository"
+	"goapimux/services"
 )
 
 var (
-	postController controller.PostController = controller.NewPostController()
+	postRepo repository.PostRepository = repository.NewPostgresRepository()
+	postService services.PostService = services.NewPostService(postRepo)
+	postController controller.PostController = controller.NewPostController(postService)
 	router http.Router = http.NewMuxRouter()
 )
 
